@@ -1,0 +1,4 @@
+Your wins for this session are   : 3
+Your losses for this session are : 1
+Your draws for this session are  : 0
+Your winrate for this session is :75.00%
