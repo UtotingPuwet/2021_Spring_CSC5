@@ -7,10 +7,10 @@
 
 //System Libraries
 #include <iostream>    //Input/Output Library
-#include <string.h>
-#include <cstdio>
-#include <ctime>
-#include <vector>
+#include <string.h>    //String Library
+#include <cstdio>      //Standard Library
+#include <ctime>       //Time Library
+#include <vector>      //Vector Library
 using namespace std;   //Library Name-space
 
 //User Libraries
