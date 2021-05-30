@@ -26,6 +26,7 @@ void pntDeck(string [], int [], int);       //print the array deck
 void filDeck(string [], int [], int);       //fill the array deck
 void selSort(string [], int [], int);       //sort the array with select sort algorithm
 void bubSort(string [], int [], int);       //sort the array with bubble sort algorithm
+void filDeck(vector<int> &, vector<string> &);
 //Execution Begins Here
 int main(int argc, char** argv) {
     //Set the Random number seed
@@ -38,20 +39,28 @@ int main(int argc, char** argv) {
         faceVal[NUMCARD];
     
     string c[NUMCARD];
+    vector<int> deck;
+    vector<string> card;
     //Initialize variables
-    filDeck(c,faceVal, NUMCARD);
-    
+    filDeck(deck,card);
     //Process, map inputs to outputs
-    shuffle(c,faceVal,NUMCARD);
-    
-    
-    bubSort(c,faceVal,NUMCARD);
-    pntDeck(c,faceVal,NUMCARD);
     //Display your initial conditions as well as outputs.
     
     //Exit stage right
     return 0;
 }
+
+void filDeck(vector<int> &deck, vector<string> &card) {
+    vector<string> face = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
+    vector<string> suit = {"Clubs", "Spades", "Diamonds", "Hearts"};
+    
+    for (int i = 0; i < 52; i++) {
+        card.push_back(face[i%13] + " of " + suit[i/13]);
+        cout << card[i] << " " << endl;
+    }
+}
+
+
 
 void filDeck (string c[], int faceVal[], int NUMCARD) {
     string face[] = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
@@ -92,41 +101,4 @@ void shuffle (string c[], int faceVal[], int NUMCARD) {
             faceVal[randVal] = itemp;
         }
     }
-}
-
-void selSort(string c[], int faceVal[], int NUMCARD) {
-    for (int i = 0; i < NUMCARD-1; i++) {
-        int minIndx = i;
-        for (int j = i+1; j < NUMCARD;j++ ) {
-           
-            if (faceVal[j] > faceVal[minIndx]) {
-                minIndx = j;
-            }
-            if (minIndx != i) {
-                int temp = faceVal[minIndx];
-                faceVal[minIndx] = faceVal[j];
-                faceVal[j] = temp;
-                
-                string tempS = c[minIndx];
-                c[minIndx] = c[j];
-                c[j] = tempS;
-            }
-        }
-    }
-}
-
-void bubSort(string c[], int faceVal[], int  NUMCARD) {
-    bool swap;
-    do {
-        
-        swap = false;
-        for (int i = 0; i < NUMCARD-1; i++) {
-            if (faceVal[i] > faceVal[i+1]) {
-                int temp = faceVal[i];
-                faceVal[i] = faceVal[i+1];
-                faceVal[i+1] = temp;
-                swap = true;
-            }
-        }
-    }while(swap);
 }

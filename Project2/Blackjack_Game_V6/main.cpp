@@ -39,6 +39,7 @@ int main(int argc, char** argv) {
         faceVal[NUMCARD];
     
     string c[NUMCARD];
+    vector<int> deck = {};
     //Initialize 
     filDeck(c,faceVal,NUMCARD);
     shuffle(c,faceVal,NUMCARD);
