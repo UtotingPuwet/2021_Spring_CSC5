@@ -27,6 +27,8 @@ void pntDeck(string [], int [], int);       //print the array deck
 void filDeck(string [], int [], int);       //fill the array deck
 void menu();
 void game (int, int[], string [], int=0, int=0);
+void filDeck(vector<int> &, vector<string> &); //fill the vector deck
+void getCard(vector<int> &, vector<string> &); //draw cards from the vector deck
 //Execution Begins Here
 int main(int argc, char** argv) {
     //Set the Random number seed
@@ -39,7 +41,8 @@ int main(int argc, char** argv) {
         faceVal[NUMCARD];
     
     string c[NUMCARD];
-    vector<int> deck = {};
+    vector<int> deck;
+    vector<string> card;
     //Initialize 
     filDeck(c,faceVal,NUMCARD);
     shuffle(c,faceVal,NUMCARD);
@@ -51,33 +54,20 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-void getCard(unsigned short &dealer) {
-    
-    //declare variables
-    int cardSC;  //an int to use for generating random suit and color
-    int faceVal; //an int to use for generating random face and value;
+void filDeck(vector<int> &deck, vector<string> &card) {
     vector<string> face = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
     vector<string> suit = {"Clubs", "Spades", "Diamonds", "Hearts"};
-    vector<string> color = {"Black", "Black", "Red", "Red"};
     
-    //initialize variables
-    faceVal = rand()%13;
-    cardSC = rand()%4;
+    for (int i = 0; i < 52; i++) {
+        card.push_back(face[i%13] + " of " + suit[i/13]);
+        deck.push_back(i%13+1);
+    }
+}
+
+void getCard(vector<int> &deck, vector<string> &card) {
+    int randVal = rand()%13 + 1;
     
-    //output
-    cout << color[cardSC] << " "<<face[faceVal] << " of " << suit[cardSC] << '\n';
-    if (faceVal > 10) {
-        dealer+= 10;
-    }
-    else if (faceVal == 0){
-        if (dealer >= 11) {
-            dealer += 1;
-        }
-        else dealer += 11;
-    }
-    else {
-        dealer+= faceVal;
-    }
+    cout << card[randVal] << "and it's value is "<< deck[randVal];
 }
 
 void getCard(string c[], int faceVal[], int NUMCARD, int &p1Hand) {
