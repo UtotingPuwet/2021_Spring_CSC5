@@ -1,8 +1,10 @@
 /*
     Author: Christian Fuentes
-    Date:   May 28 2021, 2:07 PM
-    Purpose:Making searching and sorting algorithms
-    Version:5
+    Date:   May 29 2021, 5:07 PM
+    Purpose:Made it so the vector's in the program are more like the array functions
+ * in which they can fill a deck (52) and be shuffled/sorted. Also going to
+ * make bubble sort used on the vector rather than the array
+    Version:6
  */
 
 //System Libraries
@@ -19,14 +21,17 @@ using namespace std;   //Library Name-space
 //Science, Math, Conversions, Higher Dimensioned constants only
 
 //Function Prototypes
-void getCard(string [], int [], int, int&); //will be used to draw cards for player
-void getCard(unsigned short&);              //will be used to draw cards for dealer
-void shuffle(string [], int [], int);       //shuffle the array deck
-void pntDeck(string [], int [], int);       //print the array deck
-void filDeck(string [], int [], int);       //fill the array deck
-void selSort(string [], int [], int);       //sort the array with select sort algorithm
-void bubSort(string [], int [], int);       //sort the array with bubble sort algorithm
-void filDeck(vector<int> &, vector<string> &);
+void getCard(string [], int [], int, int&);    //getcard from array deck. Will be used to draw cards for player
+void shuffle(string [], int [], int);          //shuffle the array deck
+void pntDeck(string [], int [], int);          //print the array deck
+void filDeck(string [], int [], int);          //fill the array deck
+void selSort(string [], int [], int);          //sort the array with select sort algorithm
+void bubSort(vector<int> &, vector<string> &);        //sort the vector with bubble sort algorithm
+void filDeck(vector<int> &, vector<string> &); //fill the vector deck
+void getCard(vector<int> &, vector<string> &); //draw cards from the vector deck
+void shuffle(vector<int> &, vector<string> &); //shuffle the vector deck
+void getCard(vector<int> &, vector<string> &); //get card from the vector deck. Will be used for dealer
+void pntDeck(vector<int> &, vector<string> &);
 //Execution Begins Here
 int main(int argc, char** argv) {
     //Set the Random number seed
@@ -43,6 +48,11 @@ int main(int argc, char** argv) {
     vector<string> card;
     //Initialize variables
     filDeck(deck,card);
+    shuffle(deck,card);
+    pntDeck(deck,card);
+    
+    bubSort(deck,card);
+    pntDeck(deck,card);
     //Process, map inputs to outputs
     //Display your initial conditions as well as outputs.
     
@@ -56,11 +66,30 @@ void filDeck(vector<int> &deck, vector<string> &card) {
     
     for (int i = 0; i < 52; i++) {
         card.push_back(face[i%13] + " of " + suit[i/13]);
-        cout << card[i] << " " << endl;
+        deck.push_back(i%13+1);
     }
 }
 
+void getCard(vector<int> &deck, vector<string> &card) {
+    int randVal = rand()%13 + 1;
+    
+    cout << card[randVal] << "and it's value is "<< deck[randVal];
+}
 
+void  shuffle (vector<int> &deck, vector<string> &card) {
+    for (int shfl = 0; shfl < 7; shfl++) {
+        for (int i = 0; i < 52; i++) {
+            int randVal = rand()%52;
+            string temp = card[i];
+            card[i] = card[randVal];
+            card[randVal] = temp;
+            
+            int itemp = deck[i];
+            deck[i] = deck[randVal];
+            deck[randVal] = itemp;
+        }
+    }
+}
 
 void filDeck (string c[], int faceVal[], int NUMCARD) {
     string face[] = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
@@ -101,4 +130,35 @@ void shuffle (string c[], int faceVal[], int NUMCARD) {
             faceVal[randVal] = itemp;
         }
     }
+}
+
+void bubSort(vector<int> &deck, vector<string> &card) {
+    bool swap;
+    do {
+        
+        swap = false;
+        for (int i = 0; i < 52-1; i++) {
+            if (deck[i] > deck[i+1]) {
+                int temp = deck[i];
+                deck[i] = deck[i+1];
+                deck[i+1] = temp;
+                swap = true;
+                
+                string tempS = card[i];
+                card[i] = card[i+1];
+                card[i+1] = tempS;
+            }
+        }
+    }while(swap);
+}
+
+void pntDeck (vector<int> &deck, vector<string> &card) {
+    int count = 0;
+    for (int i = 0; i < 13; i++) {
+        for (int j = 0; j < 4; j++) {
+            cout << card[count] << " and it's value is " << deck[count] << endl;
+            count++;
+        }
+        cout << endl;
+    } 
 }
