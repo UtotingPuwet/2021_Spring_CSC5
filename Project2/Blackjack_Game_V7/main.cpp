@@ -1,10 +1,10 @@
 /*
     Author: Christian Fuentes
-    Date:   May 29 2021, 10:06 AM
+    Date:   May 30 2021, 3:34 PM
     Purpose:Re-make Game through functions and arrays and vectors.
-    Version:2
+    Version:3
  * 
- * More updates on 5/30 11:26 AM. Added everything from Constructing_Deck_Array_V6_Fixing_Vectors
+ * Updated again on May 31 2021, 2:49 PM
  */
 
 //System Libraries
@@ -33,8 +33,10 @@ void getCard(vector<int> &, vector<string> &, short &);   //draw cards from the 
 void shuffle(vector<int> &, vector<string> &);          //shuffle the vector deck
 void bubSort(string [], int [], int);                   //sort the vector with bubble sort algorithm
 void game (int, int[], string [], vector<int> &, vector<string> &, int=0, short=0);
-bool check21 (short);
-bool check21 (int);
+bool check21 (short);                                   //check 21 for dealer
+bool check21 (int);                                     //check 21 for player
+void stndHit (int, int [], string c[], int &);          //player stand or hit or double down
+void dealDrw(vector<int> &, vector<string> &, short &);          //dealer auto draw if under 17
 //Execution Begins Here
 int main(int argc, char** argv) {
     //Set the Random number seed
@@ -213,24 +215,80 @@ void selSort(string c[], int faceVal[], int NUMCARD) {
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
 void game (int NUMCARD, int faceVal[], string c[],  vector<int> &deck, vector<string> &card, int p1Hand, short dealer) {
+    bool whoWon;
+    
     getCard(c,faceVal,NUMCARD,p1Hand);
     getCard(c,faceVal,NUMCARD,p1Hand);
     cout << "Your hand is " << p1Hand << '\n';
     getCard(deck,card,dealer);
     getCard(deck,card,dealer);
-    if (check21(dealer)) cout << "Dealer wins"; return;
-    if (check21(p1Hand)) cout << "Player wins"; return;
+    if (dealer == 21 && p1Hand == 21) {
+        cout << "Both people got blackjack. Push.\n";
+        return;
+    }
+    if (check21(dealer) == true) {
+        cout << "Dealer got blackjack. \n"; 
+        return;
+    }
+    if (check21(p1Hand) == true) {
+        cout << "Player got blackjack. \n";
+        return;
+    }
+    stndHit(NUMCARD,faceVal,c,p1Hand);
+    dealDrw(deck, card, dealer);
+    cout << "Dealer's hand is now " << dealer << '\n';
+    if (dealer == p1Hand) {
+        cout << "Push.";
+        return;
+    }
+    whoWon = p1Hand>dealer?true:false;
+    if (p1Hand > 21) {
+        cout << "You busted. You lost.";
+    }
+    else if (dealer > 21) {
+        cout << "Dealer busted. You won.";
+    }
+    else {
+        if (whoWon == true) {
+            cout << "You won!";
+        }
+        else {
+            cout << "You lost!";
+        }
+    }
+}
+
+void dealDrw(vector<int> &deck, vector<string> &card, short &dealer) {
+    while (dealer < 17) {
+        getCard(deck, card, dealer);
+    }
+}
+
+void stndHit (int NUMCARD, int faceVal[], string c[], int &p1Hand) {
+    unsigned short choice;
+    while (p1Hand <= 21 && choice != 2){
+        cout << "\nPress 1 to hit\nPress 2 to stand\nPress 3 to double down\n";
+        cin>>choice;
+        switch (choice) {
+            case 1: getCard(c,faceVal,NUMCARD,p1Hand); cout <<"Your hand is now " << p1Hand << '\n';break;
+            case 2: return;
+        }
+    }
     
 }
 
 bool check21 (short dealer) {
     if (dealer == 21) return true;
-    return false;
+    else {
+        return false;
+    }
 }
 
 bool check21 (int p1Hand) {
     if (p1Hand == 21) return true;
-    return false;
+    else {
+        return false;
+    }
 }
 
 
