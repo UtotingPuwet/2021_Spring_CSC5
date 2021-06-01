@@ -1,11 +1,10 @@
 /*
     Author: Christian Fuentes
-    Date:   May 30 2021, 3:34 PM
+    Date:   May 31 2021, 5:55 PM
     Purpose:Re-make Game through functions and arrays and vectors.
-    Version:3
+    Version:4
  * 
- * Updated again on May 31 2021, 2:49 PM
- * added winners and losers. 
+ * Adding a betting system
  */
 
 //System Libraries
@@ -59,13 +58,14 @@ int main(int argc, char** argv) {
     shuffle(deck,card);
     
     //bet
-    
+    initBet();
     
     //play game
     game(NUMCARD,faceVal,c,deck,card);
     
     //sort the decks back
-    
+    selSort(c,faceVal,NUMCARD);
+    bubSort(deck,card);
     //Display your initial conditions as well as outputs.
     
     //Exit stage right
@@ -338,4 +338,12 @@ void menu() {
                 cout << "Invalid option." << '\n';
             }
     }while (menu != 1);
+}
+
+void initBet(int bet) {
+    cout << "Hello! How much would you like to bet? Can't bet over $50,000.\n";
+    cin>>bet;
+    if (bet > 50000) {
+        
+    }
 }
