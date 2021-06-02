@@ -20,7 +20,7 @@ using namespace std;   //Library Name-space
 
 //Global/Universal Constants -- No Global Variables
 //Science, Math, Conversions, Higher Dimensioned constants only
-
+const float PERCENT = 100.00;
 //Function Prototypes
 void getCard(string [], int [], int, int&);             //will be used to draw cards for player
 void shuffle(string [], int [], int);                   //shuffle the array deck
@@ -32,21 +32,22 @@ void filDeck(vector<int> &, vector<string> &);          //fill the vector deck
 void getCard(vector<int> &, vector<string> &, short &); //draw cards from the vector deck. Will be used for dealer
 void shuffle(vector<int> &, vector<string> &);          //shuffle the vector deck
 void bubSort(vector<int> &, vector<string> &);          //sort the vector with bubble sort algorithm
-void game (int, int[], string [], vector<int> &, vector<string> &, int &, int &,int=0, short=0);
+void game (int, int[], string [], vector<int> &, vector<string> &, int &, int &,short &,int=0, short=0);
 bool check21 (short);                                   //check 21 for dealer
 bool check21 (int);                                     //check 21 for player
 void stndHit (int, int [], string c[], int &);          //player stand or hit or double down
 void dealDrw(vector<int> &, vector<string> &, short &);          //dealer auto draw if under 17
 void initBet(int &, int &);                             //initialize the bet money
-int betUpdt (int, int, int);                            //update bet depend in number. 0 = lose, 1 = win, 2 = push, 3 = blackjack
+int betUpdt (int, int &, int);                            //update bet depend in number. 0 = lose, 1 = win, 2 = push, 3 = blackjack
 //Execution Begins Here
 int main(int argc, char** argv) {
     //Set the Random number seed
     srand(static_cast<unsigned int>(time(NULL))); 
 
     //Declare variables
-    short dealer;
-    int NUMCARD = 52;
+    short dealer,
+          wins;
+    const int NUMCARD = 52;
     int p1Hand,
         bet,
         total,
@@ -56,6 +57,7 @@ int main(int argc, char** argv) {
     vector<int> deck;
     vector<string> card;
     //Initialize variables
+    total = 0;
     again == 'y';
     //Initialize decks
     do {
@@ -68,7 +70,7 @@ int main(int argc, char** argv) {
         initBet(bet,total);
 
         //Begin game
-        game(NUMCARD,faceVal,c,deck,card,bet,total);
+        game(NUMCARD,faceVal,c,deck,card,bet,total,wins);
 
         //Sort deck after game is finished
         selSort(c,faceVal,NUMCARD);
@@ -229,10 +231,10 @@ void selSort(string c[], int faceVal[], int NUMCARD) {
 }
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
-//end of array functions.
+//End of array functions.
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
-void game (int NUMCARD, int faceVal[], string c[],  vector<int> &deck, vector<string> &card, int &bet,int &total,int p1Hand, short dealer) {
+void game (int NUMCARD, int faceVal[], string c[],  vector<int> &deck, vector<string> &card, int &bet,int &total, short &wins,int p1Hand, short dealer) {
     bool whoWon;
     
     getCard(c,faceVal,NUMCARD,p1Hand);
@@ -253,6 +255,7 @@ void game (int NUMCARD, int faceVal[], string c[],  vector<int> &deck, vector<st
     if (check21(p1Hand) == true) {
         cout << "Player got blackjack. \n";
         cout << "Your total is now " << betUpdt(bet,total,3) << '\n';
+        wins++;
         return;
     }
     stndHit(NUMCARD,faceVal,c,p1Hand);
@@ -271,11 +274,13 @@ void game (int NUMCARD, int faceVal[], string c[],  vector<int> &deck, vector<st
     else if (dealer > 21) {
         cout << "Dealer busted. You won.\n";
         cout << "Your total is now " << betUpdt(bet,total,1) << '\n';
+        wins++;
     }
     else {
         if (whoWon == true) {
             cout << "You won!\n";
             cout << "Your total is now " << betUpdt(bet,total,1) << '\n';
+            wins++;
         }
         else {
             cout << "You lost!\n";
@@ -373,18 +378,27 @@ void initBet(int &bet, int &total) {
     total = total-bet; 
 }
 
-int betUpdt (int bet, int total, int update) {
+int betUpdt (int bet, int &total, int update) {
+    /* 0 = loss
+     * 1 = win
+     * 2 = push
+     * 3 = blackjack
+     */
     if (update == 0) {
+        total = total;
         return total;
     }
     else if (update == 1) {
-        return total+(bet*2);
+        total +=(bet*2);
+        return total;
     }
     else if (update == 2) {
-        return total+bet;
+        total += bet;
+        return total;
     }
     else if (update == 3) {
-        return total+(bet*2.5);
+        total += (bet*2.5);
+        return total;
     }
     return 0;
 }

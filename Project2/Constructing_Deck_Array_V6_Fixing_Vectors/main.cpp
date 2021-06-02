@@ -31,7 +31,7 @@ void filDeck(vector<int> &, vector<string> &); //fill the vector deck
 void getCard(vector<int> &, vector<string> &); //draw cards from the vector deck
 void shuffle(vector<int> &, vector<string> &); //shuffle the vector deck
 void getCard(vector<int> &, vector<string> &); //get card from the vector deck. Will be used for dealer
-void pntDeck(vector<int> &, vector<string> &);
+void pntDeck(vector<int> &, vector<string> &); //print the vector deck
 //Execution Begins Here
 int main(int argc, char** argv) {
     //Set the Random number seed
