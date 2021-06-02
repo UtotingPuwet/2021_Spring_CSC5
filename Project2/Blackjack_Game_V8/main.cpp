@@ -23,24 +23,41 @@ using namespace std;   //Library Name-space
 //Science, Math, Conversions, Higher Dimensioned constants only
 const float PERCENT = 100.00;
 //Function Prototypes
+//------------------------------------------------------------------------------------------------------------------------------------------------
+//All below will be array function prototypes
+//------------------------------------------------------------------------------------------------------------------------------------------------
 void getCard(string [], int [], int, int&);             //will be used to draw cards for player
 void shuffle(string [], int [], int);                   //shuffle the array deck
 void pntDeck(string [], int [], int);                   //print the array deck
 void filDeck(string [], int [], int);                   //fill the array deck
 void selSort(string [], int [], int);                   //sort the array with select sort algorithm
-void menu(string [], int [], int);                      //just a welcome message :]
+//------------------------------------------------------------------------------------------------------------------------------------------------
+//All below will be vector function prototypes
+//------------------------------------------------------------------------------------------------------------------------------------------------
+
 void filDeck(vector<int> &, vector<string> &);          //fill the vector deck
 void getCard(vector<int> &, vector<string> &, short &); //draw cards from the vector deck. Will be used for dealer
 void shuffle(vector<int> &, vector<string> &);          //shuffle the vector deck
 void bubSort(vector<int> &, vector<string> &);          //sort the vector with bubble sort algorithm
-void game (int, int[], string [], vector<int> &, vector<string> &, int &, int &,short &,int=0, short=0);
+
+//------------------------------------------------------------------------------------------------------------------------------------------------
+//All below will be game function  prototypes
+//------------------------------------------------------------------------------------------------------------------------------------------------
+
+void game (int, int[], string [], vector<int> &, vector<string> &, int &, int &,short &,int=0, short=0);//play blackjack
 bool check21 (short);                                   //check 21 for dealer
 bool check21 (int);                                     //check 21 for player
 void stndHit (int, int [], string c[], int &);          //player stand or hit or double down
-void dealDrw(vector<int> &, vector<string> &, short &);          //dealer auto draw if under 17
+void dealDrw(vector<int> &, vector<string> &, short &); //dealer auto draw if under 17
+
+//------------------------------------------------------------------------------------------------------------------------------------------------
+//All below will be menu/betting function  prototypes
+//------------------------------------------------------------------------------------------------------------------------------------------------
+
+void menu(string [], int [], int);                      //just a welcome message :]
 void initBet(int &, int &);                             //initialize the bet money
-int betUpdt (int, int &, int);                            //update bet depend in number. 0 = lose, 1 = win, 2 = push, 3 = blackjack
-void linSrch (string [], int [], int, int);
+int betUpdt (int, int &, int);                          //update bet depend in number. 0 = lose, 1 = win, 2 = push, 3 = blackjack
+void linSrch (string [], int [], int, int);             //search for certain cards
 //Execution Begins Here
 int main(int argc, char** argv) {
     //Set the Random number seed
@@ -48,19 +65,19 @@ int main(int argc, char** argv) {
 
     //Declare variables
     ofstream out;
-    short dealer,
-          wins,
-          games;
-    float winrate;
-    const int NUMCARD = 52;
-    int p1Hand,
-        bet,
-        total,
-        faceVal[NUMCARD];
-    string c[NUMCARD];
-    char again;
-    vector<int> deck;
-    vector<string> card;
+    short dealer,                                       //variable for dealer hand
+          wins,                                         //track wins
+          games;                                        //track games
+    float winrate;                                      //calculate winrate by wins/games
+    const int NUMCARD = 52;                             //size of a standard playing deck (this is  used to initialize array size)
+    int p1Hand,                                         //player 1 hand 
+        bet,                                            //how much player 1 is betting
+        total,                                          //total that the player started with
+        faceVal[NUMCARD];                               //integer value of each card
+    string c[NUMCARD];                                  //string array for each card
+    char again;                                         //variable to see if player wants to play again
+    vector<int> deck;                                   //vector for face value of each card in the deck
+    vector<string> card;                                //vector for string for each card
     //Initialize variables
     total = 0;
     again == 'y';
@@ -83,15 +100,16 @@ int main(int argc, char** argv) {
         //Sort deck after game is finished
         selSort(c,faceVal,NUMCARD);
         bubSort(deck,card);
-        cout << "Would you like to play again?\n";
+        cout << "Would you like to play again? Y for yes. N for no.\n";
         games++;
         cin>>again;
     } while (again == 'y' || again == 'Y');
     
-    winrate = wins/games;
+
     //Display your initial conditions as well as outputs.
+    winrate = wins/games;
     out.open("ChristianFuentesBlackJack.txt",ios::out);
-    out << "Your wins for this session are   : " << wins << '\n';
+    out << "Your wins for this session are   : " << static_cast<int>(wins) << '\n';
     out << "Your winrate for this session is :"  << fixed << setprecision(2) << abs(winrate*PERCENT) <<"%\n";
     out.close();
     //Exit stage right
@@ -312,7 +330,7 @@ void dealDrw(vector<int> &deck, vector<string> &card, short &dealer) {
 void stndHit (int NUMCARD, int faceVal[], string c[], int &p1Hand) {
     unsigned short choice;
     while (p1Hand <= 21 && choice != 2){
-        cout << "\nPress 1 to hit\nPress 2 to stand\nPress 3 to double down\n";
+        cout << "\nPress 1 to hit\nPress 2 to stand\n";
         cin>>choice;
         switch (choice) {
             case 1: getCard(c,faceVal,NUMCARD,p1Hand); cout <<"Your hand is now " << p1Hand << '\n';break;
@@ -335,7 +353,9 @@ bool check21 (int p1Hand) {
         return false;
     }
 }
-
+//-----------------------------------------------------------------------------------------------------
+//Anything below will be menu/betting functions
+//-----------------------------------------------------------------------------------------------------
 
 void menu(string c[], int faceVal[], int NUMCARD) {
     //menu for the beginning
@@ -376,8 +396,8 @@ void menu(string c[], int faceVal[], int NUMCARD) {
 
             }
             if (menu == 3) {
-                cout << "What card would you like to search for?"<<
-                        "0 = Ace\n" <<
+                cout << "What card would you like to search for?\n"<<
+                        "1 = Ace\n" <<
                         "10 = Jack\n" <<
                         "11 = Queen\n" <<
                         "12 = King\n";
@@ -430,10 +450,19 @@ int betUpdt (int bet, int &total, int update) {
     return 0;
 }
 
+
+/*
+ *  loop until every element in the array is checked to see if it matches val
+ * 
+ * for ( i = 0; i < NUMBEROFCARDS; i++) {
+ *      check if value is equal to value looking for
+ *      cout << name of card << next line;
+ *  }
+ */
 void linSrch (string c[], int faceVal[], int NUMCARD, int val) {
     for (int i = 0; i < NUMCARD; i++) {
         if (faceVal[i] == val) {
-            cout << c[i];
+            cout << c[i] << '\n';
         }
     }
 }

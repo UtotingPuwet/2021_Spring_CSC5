@@ -219,7 +219,7 @@ void selSort(string c[], int faceVal[], int NUMCARD) {
 }
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
-//end of array functions.
+//Anything below will be game functions
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
 void game (int NUMCARD, int faceVal[], string c[],  vector<int> &deck, vector<string> &card, int p1Hand, short dealer) {
@@ -275,7 +275,7 @@ void dealDrw(vector<int> &deck, vector<string> &card, short &dealer) {
 void stndHit (int NUMCARD, int faceVal[], string c[], int &p1Hand) {
     unsigned short choice;
     while (p1Hand <= 21 && choice != 2){
-        cout << "\nPress 1 to hit\nPress 2 to stand\nPress 3 to double down\n";
+        cout << "\nPress 1 to hit\nPress 2 to stand\n";
         cin>>choice;
         switch (choice) {
             case 1: getCard(c,faceVal,NUMCARD,p1Hand); cout <<"Your hand is now " << p1Hand << '\n';break;
