@@ -10,10 +10,11 @@
 //System Libraries
 #include <iostream>    //Input/Output Library
 #include <string.h>    //String Library
-#include <cstdio>      //Standard Library
 #include <ctime>       //Time Library
 #include <vector>      //Vector Library
 #include <fstream>     //File input/output
+#include <iomanip>     //Manipulate Library
+#include <cstdlib>     //
 using namespace std;   //Library Name-space
 
 //User Libraries
@@ -27,7 +28,7 @@ void shuffle(string [], int [], int);                   //shuffle the array deck
 void pntDeck(string [], int [], int);                   //print the array deck
 void filDeck(string [], int [], int);                   //fill the array deck
 void selSort(string [], int [], int);                   //sort the array with select sort algorithm
-void menu();                                            //just a welcome message :]
+void menu(string [], int [], int);                      //just a welcome message :]
 void filDeck(vector<int> &, vector<string> &);          //fill the vector deck
 void getCard(vector<int> &, vector<string> &, short &); //draw cards from the vector deck. Will be used for dealer
 void shuffle(vector<int> &, vector<string> &);          //shuffle the vector deck
@@ -39,14 +40,18 @@ void stndHit (int, int [], string c[], int &);          //player stand or hit or
 void dealDrw(vector<int> &, vector<string> &, short &);          //dealer auto draw if under 17
 void initBet(int &, int &);                             //initialize the bet money
 int betUpdt (int, int &, int);                            //update bet depend in number. 0 = lose, 1 = win, 2 = push, 3 = blackjack
+void linSrch (string [], int [], int, int);
 //Execution Begins Here
 int main(int argc, char** argv) {
     //Set the Random number seed
     srand(static_cast<unsigned int>(time(NULL))); 
 
     //Declare variables
+    ofstream out;
     short dealer,
-          wins;
+          wins,
+          games;
+    float winrate;
     const int NUMCARD = 52;
     int p1Hand,
         bet,
@@ -59,11 +64,14 @@ int main(int argc, char** argv) {
     //Initialize variables
     total = 0;
     again == 'y';
+    wins = 0;
     //Initialize decks
+    filDeck(c,faceVal,NUMCARD);
+    filDeck(deck,card);
+    menu(c,faceVal,NUMCARD);
     do {
-        filDeck(c,faceVal,NUMCARD);
+        
         shuffle(c,faceVal,NUMCARD);
-        filDeck(deck,card);
         shuffle(deck,card);
 
         //Initialize bet/total
@@ -76,10 +84,16 @@ int main(int argc, char** argv) {
         selSort(c,faceVal,NUMCARD);
         bubSort(deck,card);
         cout << "Would you like to play again?\n";
+        games++;
         cin>>again;
     } while (again == 'y' || again == 'Y');
-    //Display your initial conditions as well as outputs.
     
+    winrate = wins/games;
+    //Display your initial conditions as well as outputs.
+    out.open("ChristianFuentesBlackJack.txt",ios::out);
+    out << "Your wins for this session are   : " << wins << '\n';
+    out << "Your winrate for this session is :"  << fixed << setprecision(2) << abs(winrate*PERCENT) <<"%\n";
+    out.close();
     //Exit stage right
     return 0;
 }
@@ -323,11 +337,12 @@ bool check21 (int p1Hand) {
 }
 
 
-void menu() {
+void menu(string c[], int faceVal[], int NUMCARD) {
     //menu for the beginning
     ifstream in;
     string welcome;
     unsigned short menu;
+    int val;
     
     //opening welcome.txt which is just a notepad text with a "Welcome
     //To Christian's Blackjack Game!" and assigning it to string variable "welcome"
@@ -338,7 +353,10 @@ void menu() {
         //start of the menu (just menu in this do while loop)
     do {
             cout << welcome;
-            cout << "\n1. Play Blackjack.\n2. How to play.\n3. Quit game." << '\n';
+            cout << "\n1. Play Blackjack."<<
+                    "\n2. How to play."<<
+                    "\n3. Search deck for certain card."<<
+                    "\n4. Quit game." << '\n';
             cin >> menu;
             //menu choice 2 which is the rules of the game
             if (menu == 2) {
@@ -352,12 +370,21 @@ void menu() {
                         "draw).Press 1 to hit and 2 to stand.\n";
             }
             //menu choice 3 which is to quit
-            if (menu == 3) {
+            if (menu == 4) {
                 cout << "Goodbye!";
                 exit(0);
 
             }
-            if (menu > 3) {
+            if (menu == 3) {
+                cout << "What card would you like to search for?"<<
+                        "0 = Ace\n" <<
+                        "10 = Jack\n" <<
+                        "11 = Queen\n" <<
+                        "12 = King\n";
+                cin >> val;
+                linSrch(c,faceVal,NUMCARD,val);
+            }
+            if (menu > 4) {
                 cout << "Invalid option." << '\n';
             }
     }while (menu != 1);
@@ -401,4 +428,12 @@ int betUpdt (int bet, int &total, int update) {
         return total;
     }
     return 0;
+}
+
+void linSrch (string c[], int faceVal[], int NUMCARD, int val) {
+    for (int i = 0; i < NUMCARD; i++) {
+        if (faceVal[i] == val) {
+            cout << c[i];
+        }
+    }
 }
