@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
     shuffle(c,faceVal,NUMCARD);
     
     
-    bubSort(c,faceVal,NUMCARD);
+    selSort(c,faceVal,NUMCARD);
     pntDeck(c,faceVal,NUMCARD);
     //Display your initial conditions as well as outputs.
     
