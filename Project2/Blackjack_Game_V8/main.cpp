@@ -137,8 +137,8 @@ void getCard(vector<int> &deck, vector<string> &card, short &dealer) {
     if (dealer == 0) {
         cout << "Dealer got " << card[randVal] << '\n';
     }
-    if (deck[randVal] < 10) {
-        dealer += deck;
+    if (deck[randVal] > 10) {
+        dealer += 10;
     }
     else {
         dealer += deck[randVal];
