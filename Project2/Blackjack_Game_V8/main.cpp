@@ -128,6 +128,7 @@ void filDeck(vector<int> &deck, vector<string> &card) {
         card.push_back(face[i%13] + " of " + suit[i/13]);
         deck.push_back(i%13+1);
     }
+    return;
 }
 
 void getCard(vector<int> &deck, vector<string> &card, short &dealer) {
@@ -136,7 +137,13 @@ void getCard(vector<int> &deck, vector<string> &card, short &dealer) {
     if (dealer == 0) {
         cout << "Dealer got " << card[randVal] << '\n';
     }
-    dealer += deck[randVal];
+    if (deck[randVal] > 10) {
+        dealer += 10;
+    }
+    else {
+        dealer += deck[randVal];
+    }
+    return;
 }
 
 void  shuffle (vector<int> &deck, vector<string> &card) {
@@ -152,6 +159,7 @@ void  shuffle (vector<int> &deck, vector<string> &card) {
             deck[randVal] = itemp;
         }
     }
+    return;
 }
 
 void bubSort(vector<int> &deck, vector<string> &card) {
@@ -172,6 +180,7 @@ void bubSort(vector<int> &deck, vector<string> &card) {
             }
         }
     }while(swap);
+    return;
 }
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -201,6 +210,7 @@ void getCard(string c[], int faceVal[], int NUMCARD, int &p1Hand) {
     }
     
     cout << "You got a " << c[pulCard] << '\n';
+    return;
 }
 
 
@@ -214,6 +224,7 @@ void filDeck (string c[], int faceVal[], int NUMCARD) {
         
         faceVal[i] = i%13 + 1;
     }
+    return;
 }
 
 void pntDeck (string c[], int faceVal[], int NUMCARD) {
@@ -224,7 +235,8 @@ void pntDeck (string c[], int faceVal[], int NUMCARD) {
             count++;
         }
         cout << endl;
-    } 
+    }
+   return; 
 }
 
 void shuffle (string c[], int faceVal[], int NUMCARD) {
@@ -240,6 +252,7 @@ void shuffle (string c[], int faceVal[], int NUMCARD) {
             faceVal[randVal] = itemp;
         }
     }
+    return;
 }
 void selSort(string c[], int faceVal[], int NUMCARD) {
     for (int i = 0; i < NUMCARD-1; i++) {
@@ -260,6 +273,7 @@ void selSort(string c[], int faceVal[], int NUMCARD) {
             }
         }
     }
+    return;
 }
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -319,6 +333,7 @@ void game (int NUMCARD, int faceVal[], string c[],  vector<int> &deck, vector<st
             cout << "Your total is now " << betUpdt(bet,total,0) << '\n';
         }
     }
+    return;
 }
 
 void dealDrw(vector<int> &deck, vector<string> &card, short &dealer) {
@@ -337,6 +352,7 @@ void stndHit (int NUMCARD, int faceVal[], string c[], int &p1Hand) {
             case 2: return;
         }
     }
+    return;
     
 }
 
@@ -408,6 +424,7 @@ void menu(string c[], int faceVal[], int NUMCARD) {
                 cout << "Invalid option." << '\n';
             }
     }while (menu != 1);
+    return;
 }
 
 void initBet(int &bet, int &total) {
@@ -423,6 +440,7 @@ void initBet(int &bet, int &total) {
     }
     
     total = total-bet; 
+    return;
 }
 
 int betUpdt (int bet, int &total, int update) {
@@ -465,4 +483,5 @@ void linSrch (string c[], int faceVal[], int NUMCARD, int val) {
             cout << c[i] << '\n';
         }
     }
+    return;
 }
