@@ -24,14 +24,6 @@ using namespace std;   //Library Name-space
 const float PERCENT = 100.00;
 //Function Prototypes
 //------------------------------------------------------------------------------------------------------------------------------------------------
-//All below will be array function prototypes
-//------------------------------------------------------------------------------------------------------------------------------------------------
-void getCard(string [], int [], int, int&);             //will be used to draw cards for player
-void shuffle(string [], int [], int);                   //shuffle the array deck
-void pntDeck(string [], int [], int);                   //print the array deck
-void filDeck(string [], int [], int);                   //fill the array deck
-void selSort(string [], int [], int);                   //sort the array with select sort algorithm
-//------------------------------------------------------------------------------------------------------------------------------------------------
 //All below will be vector function prototypes
 //------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -39,7 +31,14 @@ void filDeck(vector<int> &, vector<string> &);          //fill the vector deck
 void getCard(vector<int> &, vector<string> &, short &); //draw cards from the vector deck. Will be used for dealer
 void shuffle(vector<int> &, vector<string> &);          //shuffle the vector deck
 void bubSort(vector<int> &, vector<string> &);          //sort the vector with bubble sort algorithm
-
+//------------------------------------------------------------------------------------------------------------------------------------------------
+//All below will be array function prototypes
+//------------------------------------------------------------------------------------------------------------------------------------------------
+void getCard(string [], int [], int, int&);             //will be used to draw cards for player
+void shuffle(string [], int [], int);                   //shuffle the array deck
+void pntDeck(string [], int [], int);                   //print the array deck
+void filDeck(string [], int [], int);                   //fill the array deck
+void selSort(string [], int [], int);                   //sort the array with select sort algorithm
 //------------------------------------------------------------------------------------------------------------------------------------------------
 //All below will be game function  prototypes
 //------------------------------------------------------------------------------------------------------------------------------------------------
@@ -140,6 +139,14 @@ void getCard(vector<int> &deck, vector<string> &card, short &dealer) {
     if (deck[randVal] > 10) {
         dealer += 10;
     }
+    else if (deck[randVal] == 1) {
+        if (dealer >= 11) {
+            dealer += 1;
+        }
+        else {
+            dealer += 11;
+        }
+    }
     else {
         dealer += deck[randVal];
     }
@@ -190,7 +197,7 @@ void bubSort(vector<int> &deck, vector<string> &card) {
 void getCard(string c[], int faceVal[], int NUMCARD, int &p1Hand) {
     
     //declare variables
-    int pulCard = rand()%50;
+    int pulCard = rand()%52+1;
     //initialize and output
     faceVal[pulCard];
     
@@ -218,17 +225,17 @@ void filDeck (string c[], int faceVal[], int NUMCARD) {
     string face[] = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
     string suit[] = {"Clubs", "Spades", "Diamonds", "Hearts"};
     for (int i = 0; i < NUMCARD; i++) {
-        c[i] = face[i%13];
-        c[i] += " of ";
-        c[i] += suit[i/13];
-        
-        faceVal[i] = i%13 + 1;
+            c[i] = face[i%13];
+            c[i] += " of ";
+            c[i] += suit[i/13];
+
+            faceVal[i] = i%13 + 1;
     }
     return;
 }
 
 void pntDeck (string c[], int faceVal[], int NUMCARD) {
-    int count = 0;
+    int count = 0;  
     for (int i = 0; i < 10; i++) {
         for (int j = 0; j < 5; j++) {
             cout << c[count] << "and it's value is " << faceVal[count] << endl;
