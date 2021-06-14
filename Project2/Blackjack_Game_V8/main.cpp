@@ -5,6 +5,8 @@
     Version:4
  * 
  * Adding a betting system
+ *
+ * Dennis was here :o :) ;P
  */
 
 //System Libraries
